@@ -1,6 +1,7 @@
 package com.hcodekeeper.deanery.controllers;
 
 import com.hcodekeeper.deanery.models.identifiers.Role;
+import com.hcodekeeper.deanery.services.CreditService;
 import com.hcodekeeper.deanery.services.impl.CreditServiceImp;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -34,13 +35,14 @@ public class LoginPerformerServlet extends HttpServlet {
         } else {
             request.setAttribute("cause", "The role you are trying to log in is currently not supported");
             request.getRequestDispatcher("/WEB-INF/error.jsp").forward(request, response);
+            return;
         }
 
         ContextToDatabaseConnection contextConn = new ContextToDatabaseConnection();
         ServletContext sce = request.getServletContext();
 
         if(contextConn.isConnectedToDB(sce)) {
-            CreditServiceImp validator = (CreditServiceImp) sce.getAttribute("creditService");
+            CreditService validator = (CreditService) sce.getAttribute("creditService");
             if (validator == null){
                 response.sendRedirect("/login/perform_login/error/db_connection");
             }

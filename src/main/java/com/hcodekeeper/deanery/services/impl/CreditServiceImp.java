@@ -5,24 +5,13 @@ import com.hcodekeeper.deanery.dao.Dao;
 import com.hcodekeeper.deanery.dao.DaoFactory;
 import com.hcodekeeper.deanery.models.UserCredentials;
 import com.hcodekeeper.deanery.models.identifiers.Role;
+import com.hcodekeeper.deanery.services.AbstractService;
 import com.hcodekeeper.deanery.services.CreditService;
 //it's only possible to access role functions and not any fields of its user
-public class CreditServiceImp implements CreditService {
-    DaoFactory daoFactory;
+public class CreditServiceImp extends AbstractService implements CreditService {
 
     public CreditServiceImp(DaoFactory daoFactory){
-        setDaoFactory(daoFactory);
-    }
-
-    public void setDaoFactory(DaoFactory daoFactory){
-        if (daoFactory == null){
-            throw new IllegalArgumentException("daoFactory can't be set to null");
-        }
-        this.daoFactory = daoFactory;
-    }
-
-    public DaoFactory getDaoFactory(){
-        return daoFactory;
+        super(daoFactory);
     }
 
     public boolean isRegistered(String login, String password, Role role){

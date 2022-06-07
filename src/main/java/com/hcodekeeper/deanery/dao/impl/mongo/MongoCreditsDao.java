@@ -15,7 +15,7 @@ public class MongoCreditsDao extends AbstractMongoDao<UserCredentials> implement
 
     MongoCreditsDao(MongoDatabase db) {
         super(db);
-        this.collection = db.getCollection("Credential", UserCredentials.class);
+        this.collection = db.getCollection("Credits", UserCredentials.class);
     }
 
     @Override

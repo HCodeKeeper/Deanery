@@ -2,19 +2,15 @@ package com.hcodekeeper.deanery.services.impl;
 import com.hcodekeeper.deanery.customExceptions.RecordAlreadyExists;
 import com.hcodekeeper.deanery.customExceptions.RecordDoesntExist;
 import com.hcodekeeper.deanery.dao.DaoFactory;
-import com.hcodekeeper.deanery.dao.GroupDao;
-import com.hcodekeeper.deanery.dao.StudentDao;
 import com.hcodekeeper.deanery.models.Group;
-import com.hcodekeeper.deanery.models.Student;
+import com.hcodekeeper.deanery.services.AbstractService;
 import com.hcodekeeper.deanery.services.GroupService;
 
-import java.util.Collection;
-
-public class GroupServiceImp implements GroupService {
+public class GroupServiceImp extends AbstractService implements GroupService {
     DaoFactory daoFactory;
 
     public GroupServiceImp(DaoFactory daoFactory){
-        setDaoFactory(daoFactory);
+        super(daoFactory);
     }
 
     public void setDaoFactory(DaoFactory daoFactory){
@@ -44,8 +40,21 @@ public class GroupServiceImp implements GroupService {
     }
 
     @Override
-    public Collection<Group> getByStudentName(String name) {
-        return getDaoFactory().getGroupDao().getByStudentName(name);
+    public Group getByStudentName(String name) throws RecordDoesntExist {
+        try {
+            return getDaoFactory().getGroupDao().getByStudentName(name);
+        } catch (RecordDoesntExist e){
+            throw e;
+        }
+    }
+
+    @Override
+    public Group getByName(String name) throws RecordDoesntExist {
+        try {
+            return getDaoFactory().getGroupDao().getByName(name);
+        } catch (RecordDoesntExist e){
+            throw e;
+        }
     }
 
     @Override

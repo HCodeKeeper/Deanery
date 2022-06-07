@@ -1,5 +1,6 @@
 package com.hcodekeeper.deanery.dao.impl.mongo;
 
+import com.hcodekeeper.deanery.customExceptions.RecordDoesntExist;
 import com.hcodekeeper.deanery.dao.StudentDao;
 import com.hcodekeeper.deanery.models.Group;
 import com.hcodekeeper.deanery.models.Student;
@@ -19,8 +20,12 @@ public class MongoStudentDao extends AbstractMongoDao<Student> implements Studen
     }
 
     @Override
-    public Student getByName(String name) {
-        return collection.find(Filters.eq("name", name)).first();
+    public Student getByName(String name) throws RecordDoesntExist {
+        Student student = collection.find(Filters.eq("name", name)).first();
+        if(student == null){
+            throw new RecordDoesntExist("Student isn't recorded");
+        }
+        return student;
     }
 
     @Override
@@ -42,19 +47,34 @@ public class MongoStudentDao extends AbstractMongoDao<Student> implements Studen
     }
 
     @Override
-    public void attachCreditsId(String name, ObjectId id) {
-        getByName(name).setCreditsId(id);
+    public void attachCreditsId(String name, ObjectId id) throws RecordDoesntExist{
+        if(id == null){
+            throw new NullPointerException("Credits id is set to null");
+        }
+        try {
+            getByName(name).setCreditsId(id);
+        } catch (RecordDoesntExist e){
+            throw e;
+        }
     }
 
     @Override
-    public void changeName(String previousName, String newName) {
-        Student student = getByName(previousName);
-        student.setName(newName);
-        update(student);
+    public void changeName(String previousName, String newName) throws RecordDoesntExist{
+        try {
+            Student student = getByName(previousName);
+            student.setName(newName);
+            update(student);
+        } catch (RecordDoesntExist e){
+            throw e;
+        }
     }
 
     @Override
     public void delete(String name) {
-        delete(getByName(name));
+        try {
+            delete(getByName(name));
+        } catch (RecordDoesntExist e){
+            return;
+        }
     }
 }

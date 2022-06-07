@@ -12,8 +12,9 @@ public class Employee extends User implements AbstractPojo{
     private String name;
     private ObjectId creditsId;
 
-    public void setName(String name) {
+    public Employee setName(String name) {
         this.name = name;
+        return this;
     }
 
     public ObjectId getCreditsId() {

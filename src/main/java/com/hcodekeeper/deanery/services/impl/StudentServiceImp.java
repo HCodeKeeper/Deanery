@@ -1,21 +1,22 @@
 package com.hcodekeeper.deanery.services.impl;
 
+import com.hcodekeeper.deanery.customExceptions.RecordDoesntExist;
 import com.hcodekeeper.deanery.dao.CreditsDao;
 import com.hcodekeeper.deanery.dao.DaoFactory;
 import com.hcodekeeper.deanery.dao.StudentDao;
 import com.hcodekeeper.deanery.models.Student;
 import com.hcodekeeper.deanery.models.identifiers.Role;
+import com.hcodekeeper.deanery.services.AbstractService;
 import com.hcodekeeper.deanery.services.StudentService;
 import org.bson.types.ObjectId;
-import static com.hcodekeeper.deanery.models.identifiers.Role.STUDENT;
 
 
-public class StudentServiceImp implements StudentService {
+public class StudentServiceImp extends AbstractService implements StudentService {
 
     private DaoFactory daoFactory;
 
     public StudentServiceImp(DaoFactory daoFactory){
-
+        super(daoFactory);
     }
 
     public DaoFactory getDaoFactory() {
@@ -30,24 +31,37 @@ public class StudentServiceImp implements StudentService {
     }
 
     @Override
-    public void add(String login, String password, String name) {
+    public void add(String login, String password, String name) throws RecordDoesntExist {
         StudentDao studentDao = getDaoFactory().getStudentDao();
         CreditsDao creditsDao = getDaoFactory().getCreditsDao();
 
         studentDao.insert(name);
         creditsDao.insert(login, password, Role.STUDENT);
         ObjectId creditsId = creditsDao.getByLoginPassRole(login, password, Role.STUDENT).getId();
-        studentDao.attachCreditsId(name, creditsId);
+        try {
+            studentDao.attachCreditsId(name, creditsId);
+        } catch (RecordDoesntExist e){
+            throw e;
+        }
+
     }
 
     @Override
     public Student get(String name) {
-        return getDaoFactory().getStudentDao().getByName(name);
+        try {
+            return getDaoFactory().getStudentDao().getByName(name);
+        } catch (RecordDoesntExist e){
+            return null;
+        }
     }
 
     @Override
     public void changeName(String previousName, String newName) {
-        getDaoFactory().getStudentDao().changeName(previousName, newName);
+        try {
+            getDaoFactory().getStudentDao().changeName(previousName, newName);
+        } catch (RecordDoesntExist e){
+            return;
+        }
     }
 
     @Override

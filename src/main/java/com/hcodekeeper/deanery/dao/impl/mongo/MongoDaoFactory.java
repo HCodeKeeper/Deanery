@@ -8,14 +8,19 @@ public class MongoDaoFactory implements DaoFactory {
     GroupDao groupDao;
     StudentDao studentDao;
     CreditsDao creditsDao;
+    EmployeeDao employeeDao;
 
     public MongoDaoFactory(MongoDatabase db){
         this.db = db;
+        studentDao = new MongoStudentDao(this.db);
+        creditsDao = new MongoCreditsDao(this.db);
+        groupDao = new MongoGroupDao(this.db, studentDao);
+        employeeDao = new MongoEmployeeDao(this.db);
     }
 
     @Override
     public EmployeeDao getEmployeeDao() {
-        return null;
+        return employeeDao;
     }
 
     @Override

@@ -5,12 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 public class RoleParser {
-    private HttpServletRequest request;
-
-    public RoleParser(HttpServletRequest request){
-        this.request = request;
-    }
-    public Role getRole(){
+    public Role getRole(HttpServletRequest request){
         HttpSession session = request.getSession(false);
         if(session != null){
             Role credits = (Role) session.getAttribute("role");
@@ -19,5 +14,11 @@ public class RoleParser {
             }
         }
         return null;
+    }
+
+    public void eraseRole(HttpServletRequest request){
+        if (getRole(request) != null){
+            request.getSession().setAttribute("role", null);
+        }
     }
 }

@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
 
 @WebFilter(filterName = "EmployeeFilter", urlPatterns = "/employee/*")
 public class EmployeeFilter implements Filter {
@@ -21,16 +23,14 @@ public class EmployeeFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
-        RoleParser roleParser = new RoleParser(req);
-        Role role = roleParser.getRole();
-        if(role == null){
+        RoleParser roleParser = new RoleParser();
+        Role role = roleParser.getRole(req);
+        if(role == null || !role.equals(Role.EMPLOYEE)){
             res.sendRedirect("/login");
         }
-        else if(role == Role.EMPLOYEE){
-            res.sendRedirect(req.getContextPath());
-        }
         else{
-            chain.doFilter(request, response);
+            res.sendRedirect(req.getContextPath());
+
         }
     }
 }

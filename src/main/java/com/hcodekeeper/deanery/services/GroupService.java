@@ -10,7 +10,8 @@ public interface GroupService {
     void add(String name) throws RecordAlreadyExists;
     void addStudent(String groupName, String studentName) throws RecordDoesntExist;
     void deleteStudent(String groupName, String studentName) throws RecordDoesntExist;
-    Collection<Group> getByStudentName(String name);
+    Group getByStudentName(String name) throws RecordDoesntExist;
+    Group getByName(String name) throws RecordDoesntExist;
     void changeName(String previousName, String newName) throws RecordDoesntExist;
     void delete(String name) throws RecordDoesntExist;
 }

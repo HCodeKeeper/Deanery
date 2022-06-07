@@ -7,13 +7,12 @@ import com.hcodekeeper.deanery.models.Group;
 import java.util.Collection;
 
 public interface GroupDao extends Dao<Group> {
-    Collection<Group> getByAuthor(Employee author);
 
-    Group getByName(String name);
+    Group getByName(String name) throws RecordDoesntExist;
 
     void insert(String name);
 
-    Collection<Group> getByStudentName(String name);
+    Group getByStudentName(String name) throws RecordDoesntExist;
 
     void addStudent(String groupName, String studentName) throws RecordDoesntExist;
 

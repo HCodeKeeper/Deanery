@@ -19,8 +19,9 @@ public class Group implements AbstractPojo{
         return name;
     }
 
-    public void setName(String name) {
+    public Group setName(String name) {
         this.name = name;
+        return this;
     }
 
     private String name;
@@ -30,7 +31,7 @@ public class Group implements AbstractPojo{
     }
 
     @Override
-    public AbstractPojo setId(ObjectId id) {
+    public Group setId(ObjectId id) {
         this.id = id;
         return this;
     }

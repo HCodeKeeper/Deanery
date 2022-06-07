@@ -1,0 +1,22 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="com.hcodekeeper.deanery.models.Group" %>
+<%@ page import="java.util.TreeSet" %>
+<%@ page import="java.util.List" %>
+<%@page pageEncoding="UTF-8"%>
+<% Group group = (Group)request.getAttribute("group"); %>
+<% List students = (List)request.getAttribute("students"); %>
+<div>
+    <table class="db_table">
+        <div class="group_title"><c:out value="${group.getName()}"></c:out></div>
+        <tr>
+            <td>Student Id</td>
+            <td>Name</td>
+        </tr>
+        <c:forEach items="${students}" var="student">
+            <tr>
+                <td><c:out value="${student.getId()}" /></td>
+                <td><c:out value="${student.getName()}"/></td>
+            </tr>
+        </c:forEach>
+    </table>
+</div>
