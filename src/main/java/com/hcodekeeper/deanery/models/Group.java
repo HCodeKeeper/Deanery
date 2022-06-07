@@ -11,7 +11,7 @@ public class Group implements AbstractPojo{
     @BsonProperty(value = "_id")
     private ObjectId id;
     @BsonProperty
-    private TreeSet<ObjectId> studentIds;
+    private TreeSet<ObjectId> studentIds = new TreeSet<>();
     @BsonProperty
     private ObjectId authorId;
 

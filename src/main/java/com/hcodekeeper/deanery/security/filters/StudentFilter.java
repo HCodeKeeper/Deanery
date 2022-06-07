@@ -28,7 +28,7 @@ public class StudentFilter implements Filter {
             res.sendRedirect("/login");
         }
         else{
-            res.sendRedirect(req.getContextPath());
+            chain.doFilter(request, response);
         }
     }
 }

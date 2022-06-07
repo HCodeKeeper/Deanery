@@ -1,9 +1,11 @@
 package com.hcodekeeper.deanery.controllers;
 
+import com.hcodekeeper.deanery.customExceptions.RecordAlreadyExists;
 import com.hcodekeeper.deanery.customExceptions.RecordDoesntExist;
 import com.hcodekeeper.deanery.models.identifiers.Role;
 import com.hcodekeeper.deanery.services.CreditService;
 import com.hcodekeeper.deanery.services.EmployeeService;
+import com.hcodekeeper.deanery.services.GroupService;
 import com.hcodekeeper.deanery.services.StudentService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -15,13 +17,15 @@ import java.io.IOException;
 public class InsertDataServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        /*EmployeeService employeeService = (EmployeeService) request.getServletContext().getAttribute("employeeService");
+        GroupService employeeService = (GroupService) request.getServletContext().getAttribute("groupService");
+        StudentService studentService = (StudentService) request.getServletContext().getAttribute("studentService");
         try{
-            employeeService.add("SUPER_ADMIN", "admin", "super");
-        } catch (RecordDoesntExist e){
+            studentService.add("user", "1234", "The Man");
+            employeeService.add("IA-11");
+            employeeService.addStudent("IA-11", "The Man");
+        } catch (RecordAlreadyExists | RecordDoesntExist e){
             System.out.println(e.getMessage());
         }
-         */
     }
 
     @Override

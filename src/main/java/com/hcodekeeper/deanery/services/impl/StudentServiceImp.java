@@ -68,4 +68,13 @@ public class StudentServiceImp extends AbstractService implements StudentService
     public void delete(String name) {
         getDaoFactory().getStudentDao().delete(name);
     }
+
+    @Override
+    public Student get(ObjectId id) throws RecordDoesntExist{
+        try {
+            return getDaoFactory().getStudentDao().get(id);
+        } catch (RecordDoesntExist e){
+            throw e;
+        }
+    }
 }

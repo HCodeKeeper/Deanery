@@ -14,6 +14,11 @@
 <body>
     <h1>Something went wrong. Try again later.</h1>
     <div><p1>Cause: <c:out value="${requestScope.cause}"/></p1></div>
-    <div><a href="/login">Return to login page</a></div>
+    <c:if test="${requestScope.returnPage != null}">
+        <div><a href="${requestScope.returnPage}">Return to home page</a></div>
+    </c:if>
+    <c:if test="${requestScope.returnPage == null}">
+        <div><a href="/login">Return to login page</a></div>
+    </c:if>
 </body>
 </html>

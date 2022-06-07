@@ -14,6 +14,7 @@ import java.io.IOException;
 public class LoginPerformerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("role", "Employee");
         response.sendRedirect("/login/perform_login/error");
     }
 

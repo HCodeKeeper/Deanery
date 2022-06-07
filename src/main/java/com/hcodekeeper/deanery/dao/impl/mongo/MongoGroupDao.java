@@ -44,9 +44,11 @@ public class MongoGroupDao extends AbstractMongoDao<Group> implements GroupDao {
 
             if (student != null){
                 Group group = collection.find(Filters.eq("_id", student.getGroupId())).first();
-                return group;
+                if (group != null) {
+                    return group;
+                }
             }
-            return null;
+            throw new RecordDoesntExist("Group isn't recorded");
         } catch (RecordDoesntExist e){
             throw e;
         }
@@ -58,6 +60,7 @@ public class MongoGroupDao extends AbstractMongoDao<Group> implements GroupDao {
         if(group != null){
             Student student = studentDao.getByName(studentName);
             if (student != null){
+                System.out.println("bruh");
                 deleteStudent(student.getGroupId(), studentName);
                 student.setGroupId(group.getId());
                 studentDao.update(student);
@@ -67,10 +70,15 @@ public class MongoGroupDao extends AbstractMongoDao<Group> implements GroupDao {
         }
     }
 
-    private void deleteStudent(ObjectId groupId, String studentName) throws RecordDoesntExist{
+    private void deleteStudent(ObjectId groupId, String studentName) {
         Group group = collection.find(Filters.eq("_id", groupId)).first();
         if( group != null){
-            Student student = studentDao.getByName(studentName);
+            Student student = null;
+            try{
+                student = studentDao.getByName(studentName);
+            } catch (RecordDoesntExist e){
+                return;
+            }
             if(student != null){
                 group.getStudentIds().remove(student);
                 student.setGroupId(null);
@@ -79,7 +87,6 @@ public class MongoGroupDao extends AbstractMongoDao<Group> implements GroupDao {
                 return;
             }
         }
-        throw new RecordDoesntExist("Either student or group doesn't exist");
     }
 
     @Override

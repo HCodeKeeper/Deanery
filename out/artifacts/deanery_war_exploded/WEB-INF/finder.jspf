@@ -1,0 +1,16 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: Max
+  Date: 07.06.2022
+  Time: 12:06
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<form action="/employee/find/group">
+    <input type="text" name="query">
+    <label for="parameterChoices">Find by </label>
+    <select name="parameter" id="parameterChoices">
+        <option value="studentName">Student name</option>
+        <option value="groupName">Group name</option>
+    </select>
+</form>

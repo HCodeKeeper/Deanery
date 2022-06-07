@@ -10,7 +10,12 @@ import java.io.IOException;
 public class EmployeeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String userFunction = "List all students";
+        String links = "/employee/list/students";
+        request.setAttribute("userFunction", userFunction);
+        request.setAttribute("functionLink", links);
 
+        request.getRequestDispatcher("/WEB-INF/employee/home.jsp").forward(request, response);
     }
 
     @Override
