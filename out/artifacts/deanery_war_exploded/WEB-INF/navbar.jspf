@@ -6,4 +6,5 @@
     <c:if test="${userFunction != null}">
         <a href="${functionLink}"><c:out value="${userFunction}"></c:out></a>
     </c:if>
+    <a href="/employee">Home</a>
 </div>

@@ -52,7 +52,9 @@ public class MongoStudentDao extends AbstractMongoDao<Student> implements Studen
             throw new NullPointerException("Credits id is set to null");
         }
         try {
-            getByName(name).setCreditsId(id);
+            Student student = getByName(name);
+            student.setCreditsId(id);
+            update(student);
         } catch (RecordDoesntExist e){
             throw e;
         }

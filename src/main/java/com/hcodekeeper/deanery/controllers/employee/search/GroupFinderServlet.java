@@ -28,8 +28,12 @@ public class GroupFinderServlet extends HttpServlet {
                Group group = groupService.getByName(parameters.get("query")[0]);
                request.setAttribute("group", group);
                List<Student> students = new ArrayList();
-               for (ObjectId id : group.getStudentIds()){
-                   students.add(studentService.get(id));
+               try {
+                   for (ObjectId id : group.getStudentIds()) {
+                       students.add(studentService.get(id));
+                   }
+               } catch (RecordDoesntExist e){
+                   
                }
                request.setAttribute("students", students);
                request.getRequestDispatcher("/WEB-INF/employee/group.jsp").forward(request, response);

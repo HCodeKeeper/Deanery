@@ -18,7 +18,7 @@ public class Student extends User implements AbstractPojo{
     }
 
     public void setCreditsId(ObjectId creditsId) {
-        this.creditsId = this.creditsId;
+        this.creditsId = creditsId;
     }
 
     @BsonProperty

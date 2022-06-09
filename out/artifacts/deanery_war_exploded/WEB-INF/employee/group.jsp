@@ -10,27 +10,38 @@
 <html>
 <head>
     <title><c:out value="Employee-${group.getName()}"/> </title>
-    <link href="style.css" rel="stylesheet" type="text/css">
+    <link href="../../style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-    <%@include file="../finder.jspf"%>
+<div class="wrapper">
     <%@ include file="../navbar.jspf"%>
+
+        <div class="container">
+            <%@include file="../finder.jspf"%>
     <%@ include file="../group.jspf"%>
-    <form action="/employee/update/student">
-        <label>Edit student: </label>
-        <label>Name</label>
-        <input class="non_hittable" type="text" name="studentName"/>
-        <input type="submit" value="Edit">
-        <input type="submit" value="Delete from group", formaction="/employee/delete/student">
-    </form>
+            <div class="form">
+        <form action="/employee/update/student" >
+
+            <div><span>Edit student:</span></div>
+            <label>Name</label>
+            <input class="non_hittable" type="text" name="studentName"/>
+            <input type="submit" value="Edit">
+            <input type="submit" value="Delete from group", formaction="/employee/delete/student">
+        </form>
+            </div>
+
+            <div class="form">
     <form action="/employee/update/group">
-        <label>Edit Group: </label>
+        <div><span>Edit Group: </span></div>
         <label>Name</label>
         <input class="non_hittable" type="text" name="groupName" value="${group.getName()}" readonly="readonly"/>
         <input type="submit" value="Edit">
         <input type="submit" value="Delete", formaction="/employee/delete/student">
     </form>
+            </div>
     <%@ include file="../footer.jspf"%>
+        </div>
+</div>
 
 </body>
 </html>

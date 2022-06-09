@@ -21,9 +21,8 @@ public class InsertDataServlet extends HttpServlet {
         StudentService studentService = (StudentService) request.getServletContext().getAttribute("studentService");
         try{
             studentService.add("user", "1234", "The Man");
-            employeeService.add("IA-11");
             employeeService.addStudent("IA-11", "The Man");
-        } catch (RecordAlreadyExists | RecordDoesntExist e){
+        } catch (RecordDoesntExist e){
             System.out.println(e.getMessage());
         }
     }

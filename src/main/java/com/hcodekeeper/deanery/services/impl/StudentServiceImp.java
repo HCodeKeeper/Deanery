@@ -4,7 +4,9 @@ import com.hcodekeeper.deanery.customExceptions.RecordDoesntExist;
 import com.hcodekeeper.deanery.dao.CreditsDao;
 import com.hcodekeeper.deanery.dao.DaoFactory;
 import com.hcodekeeper.deanery.dao.StudentDao;
+import com.hcodekeeper.deanery.models.Group;
 import com.hcodekeeper.deanery.models.Student;
+import com.hcodekeeper.deanery.models.UserCredentials;
 import com.hcodekeeper.deanery.models.identifiers.Role;
 import com.hcodekeeper.deanery.services.AbstractService;
 import com.hcodekeeper.deanery.services.StudentService;
@@ -36,7 +38,11 @@ public class StudentServiceImp extends AbstractService implements StudentService
         CreditsDao creditsDao = getDaoFactory().getCreditsDao();
 
         studentDao.insert(name);
-        creditsDao.insert(login, password, Role.STUDENT);
+        UserCredentials credentials = creditsDao.getByLoginPassRole(login, password, Role.STUDENT);
+        if (credentials == null){
+            creditsDao.insert(login, password, Role.STUDENT);
+        }
+
         ObjectId creditsId = creditsDao.getByLoginPassRole(login, password, Role.STUDENT).getId();
         try {
             studentDao.attachCreditsId(name, creditsId);
@@ -56,17 +62,34 @@ public class StudentServiceImp extends AbstractService implements StudentService
     }
 
     @Override
-    public void changeName(String previousName, String newName) {
+    public void changeName(String previousName, String newName) throws RecordDoesntExist {
         try {
             getDaoFactory().getStudentDao().changeName(previousName, newName);
         } catch (RecordDoesntExist e){
-            return;
+            throw e;
         }
     }
 
     @Override
-    public void delete(String name) {
-        getDaoFactory().getStudentDao().delete(name);
+    public void delete(String name) throws RecordDoesntExist{
+        try {
+            Student student = getDaoFactory().getStudentDao().getByName(name);
+            System.out.println("whadadogdoin");
+            try {
+                Group group = getDaoFactory().getGroupDao().get(student.getGroupId());
+                getDaoFactory().getGroupDao().deleteStudent(group.getName(), student.getName());
+            } catch (RecordDoesntExist e){
+
+            }
+
+            UserCredentials userCredentials = getDaoFactory().getCreditsDao().get(student.getCreditsId());
+            System.out.println("reel");
+            getDaoFactory().getStudentDao().delete(name);
+            System.out.println("y");
+        } catch (RecordDoesntExist e){
+            throw e;
+        }
+
     }
 
     @Override
